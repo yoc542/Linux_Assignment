@@ -1,0 +1,33 @@
+#!/bin/bash
+
+# Function to traverse the filesystem tree
+traverse_directory() {
+    local directory=$1
+
+    # Check if the directory exists
+    if [ -d "$directory" ]; then
+        # List files and directories in the current directory
+        echo "Current Directory: $directory"
+        echo "---------------------"
+        find "$directory" -maxdepth 1
+
+        # Traverse subdirectories
+        for subdir in "$directory"/*; do
+            if [ -d "$subdir" ]; then
+                traverse_directory "$subdir"
+            fi
+        done
+    else
+        echo "Directory not found: $directory"
+    fi
+}
+
+# Main program,
+#check if command line argument is provided.
+if [ -z "$1" ]; then
+    #$0 indicates bash script name which in this case is ./traverse.sh
+    echo "Usage: $0 <directory>"
+    exit 1
+fi
+
+traverse_directory "$1"
