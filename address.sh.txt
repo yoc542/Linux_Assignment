@@ -1,6 +1,5 @@
 #!/bin/sh
 
-# Function to display the menu
 display_menu() {
     echo "Address Book Menu:"
     echo "1. Search"
@@ -9,15 +8,12 @@ display_menu() {
     echo "4. Display All Entries"
     echo "5. Quit"
 }
-
-# Function to search for entries
 search_entries() {
     echo "Enter search term:"
     read search_term
     grep -i "$search_term" address_book.txt
 }
 
-# Function to add a new entry
 add_entry() {
     echo "Enter Name:"
     read name
@@ -28,7 +24,7 @@ add_entry() {
     echo "Enter Phone:"
     read phone
 
-    # Check if the entry already exists
+    # Check if the entry already exists,q for executing grep quietly without displaying output
     if grep -q "$name $surname" address_book.txt; then
         echo "This entry already exists. Do you want to edit it? (y/n)"
         read choice
@@ -41,14 +37,13 @@ add_entry() {
         fi
     fi
 
-    # Save the entry to the file
+    #saving the entry to the file
     echo "$name $surname | Email: $email | Phone: $phone" >> address_book.txt
-    echo "Entry added successfully."
+    echo "Data added successfully."
 }
 
-# Function to remove or edit an entry
 remove_edit_entry() {
-    echo "Enter search term to narrow down entries:"
+    echo "Enter search term:"
     read search_term
     matching_entries=$(grep -i "$search_term" address_book.txt)
     echo "$matching_entries"
@@ -85,21 +80,18 @@ remove_edit_entry() {
     esac
 }
 
-# Function to remove an entry
 remove_entry() {
     entry_to_remove="$1"
+    # z indicates if zero number of matching entries
     sed -i "/$entry_to_remove/d" address_book.txt
     echo "Entry removed successfully."
 }
 
-# Function to edit an entry
 edit_entry() {
     entry_to_edit="$1"
     echo "Editing Entry: $entry_to_edit"
     
- 
 
-   # Allow user to modify data
     echo "Name [ $name ]"
     read new_name
     name=${new_name:-$name}
@@ -116,10 +108,10 @@ edit_entry() {
     read new_phone
     phone=${new_phone:-$phone}
 
-    # Remove the old entry
+    #remove the old entry
     remove_entry "$entry_to_edit"
 
-    # Add the updated entry
+    #add updated entry
     echo "$name $surname | Email: $email | Phone: $phone" >> address_book.txt
     echo "Entry edited successfully."
 }
@@ -148,7 +140,7 @@ while true; do
             exit 0
             ;;
         *)
-            echo "Invalid choice. Please enter a number between 1 and 5."
+            echo "Invalid choice"
             ;;
     esac
 done
